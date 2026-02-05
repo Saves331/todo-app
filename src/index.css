@@ -1,0 +1,13 @@
+@import "tailwindcss";
+body {
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+@theme {
+  --color-cream: #FFFDF1; /*hlavné pozadie appky/veľké plochy (page, main container)*/
+  --color-peach: #FFCE99; /*karty taskov/input polia/side panel / header background*/
+  --color-orange: #FF9644; /*„Add task“ button/checkbox (checked state)/hover stavy/priority / highlight tasku*/
+  --color-brown: #562F00; /*hlavný text/titles/icons/borders (veľmi tenké)*/
+}
