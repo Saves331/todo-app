@@ -4,10 +4,22 @@ body {
   min-height: 100vh;
 }
 
+@layer components {
+  .cardBox {
+  @apply  gap-3 py-7 px-4 w-full select-none
+          rounded-md cursor-pointer shadow-md
+          transition-all duration-150 ease-in-out
+          active:scale-99 active:shadow-none
+      }
+
+  }
+
+
 
 @theme {
   --color-cream: #FFFDF1; /*hlavné pozadie appky/veľké plochy (page, main container)*/
   --color-peach: #FFCE99; /*karty taskov/input polia/side panel / header background*/
   --color-orange: #FF9644; /*„Add task“ button/checkbox (checked state)/hover stavy/priority / highlight tasku*/
   --color-brown: #562F00; /*hlavný text/titles/icons/borders (veľmi tenké)*/
+  --color-dark-orange: #FF7A00; /*hover stavy/priority/highlight tasku*/
 }
