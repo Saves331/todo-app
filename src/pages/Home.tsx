@@ -1,4 +1,5 @@
 import Header from '../components/Header'
+import BoardStash from '../components/BoardStash'
 import { FaUser } from "react-icons/fa";
 
 function Home() {
@@ -6,7 +7,7 @@ function Home() {
     <section className='bg-cream h-full'>
         <Header />
         <div className='w-[75%] mx-auto'>
-          <div className='bg-amber-300 py-8 border-b-2 border-b-orange'>
+          <div className='py-8 border-b-2 border-b-orange'>
            <h2 className='text-lg text-center uppercase font-semibold text-brown'>Your Workspace</h2>
         </div>
 
@@ -14,7 +15,11 @@ function Home() {
           <FaUser className="text-brown"/>
             <h2 className='text-md uppercase font-bold text-brown'>Your Projects</h2>
         </div>
+
+          <BoardStash/>
         </div>
+
+        
         
     </section>
   )

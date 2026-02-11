@@ -1,11 +1,12 @@
-type Props = {
-    skills: string[]
-}
+import { useState } from "react"
+import AddProjectBtn from "./AddProjectBtn"
 
-function BoardStash({ skills }: Props) {
+function BoardStash() {
+
+  const [remaining, setRemaining] = useState(8);
   return (
     <div>
-        
+        <AddProjectBtn remaining={remaining} />
     </div>
   )
 }
