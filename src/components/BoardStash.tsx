@@ -24,6 +24,7 @@ type Action = | {type: "ADD_BOARD"} | {type: "REMOVE_BOARD"; id: string} | {type
       }
 
       case "REMOVE_BOARD" : {
+
         return {
           boards: state.boards.filter((board) => board.id !== action.id)
         }
@@ -100,13 +101,13 @@ function BoardCard({
             setDraft(board.name);
             setIsEditing(true);
           }}
-          className="px-2 py-1 rounded border"
+          className="px-2 py-1 rounded border cursor-pointer"
         >
           Rename
         </button>
         <button
           onClick={onRemove}
-          className="px-2 py-1 rounded border border-red-300 text-red-600"
+          className="px-2 py-1 rounded border border-red-300 text-red-600 cursor-pointer"
         >
           Delete
         </button>
@@ -116,6 +117,7 @@ function BoardCard({
 }
 
 export default function BoardStash()  {
+  const [confirmDelete, setConfirmDelete] = useState<Board | null>(null)
   const [state, dispatch] = useReducer(reducer, {boards: []});
 
   const remaining = MAX_BOARDS - state.boards.length;
@@ -132,10 +134,40 @@ export default function BoardStash()  {
           <BoardCard
             key={board.id}
             board={board}
-            onRemove={() => dispatch({type: "REMOVE_BOARD", id: board.id})}
+            onRemove={() => setConfirmDelete(board)}
             onRename={(name) => dispatch({type: "RENAME_BOARD", id: board.id, name})}
           />
         ))}
+
+
+        {confirmDelete && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
+    <div className="bg-white rounded-lg p-4 w-full max-w-sm">
+      <h3 className="text-lg font-bold mb-2">Delete board?</h3>
+      <p className="mb-4">
+        Are you sure you want to delete <b>{confirmDelete.name}</b>?
+      </p>
+
+      <div className="flex justify-end gap-2">
+        <button
+          className="px-3 py-2 rounded border"
+          onClick={() => setConfirmDelete(null)}
+        >
+          Cancel
+        </button>
+        <button
+          className="px-3 py-2 rounded border border-red-300 text-red-600"
+          onClick={() => {
+            dispatch({ type: "REMOVE_BOARD", id: confirmDelete.id });
+            setConfirmDelete(null);
+          }}
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+)}
       
       <AddProjectBtn remaining={remaining} createBoard={createBoard}></AddProjectBtn>
     </div>
