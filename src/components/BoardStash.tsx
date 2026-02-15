@@ -1,5 +1,7 @@
 import { useState, useReducer } from "react"
 import AddProjectBtn from "./AddProjectBtn"
+import { useNavigate } from "react-router-dom";
+
 
 const MAX_BOARDS = 8;
 
@@ -63,15 +65,15 @@ function BoardCard({
     setIsEditing(false)
   }
 
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-white rounded-md mb-4 cardBox active:bg-gray-200 p-3 flex items-center justify-between gap-3">
+    <div className="bg-white rounded-md mb-4 cardBox active:bg-gray-200 flex items-center justify-between gap-3 z-10" onClick={() => navigate(`/board/${board.id}`)}>
 
       <div className="flex-1">
         {!isEditing ? (
-          <button className="text-left w-full" onDoubleClick={() => {
-            setDraft(board.name);
-            setIsEditing(true);
-          }}
+          <button className="text-left w-full cursor-pointer"
+          
           title="Double click to edit"
           >
               <h2 className="text-lg font-bold text-brown">{board.name}</h2>
@@ -97,17 +99,21 @@ function BoardCard({
 
       <div className="flex items-center gap-2">
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             setDraft(board.name);
             setIsEditing(true);
           }}
-          className="px-2 py-1 rounded border cursor-pointer"
+          className="px-2 py-1 rounded border cursor-pointer z-20"
         >
           Rename
         </button>
         <button
-          onClick={onRemove}
-          className="px-2 py-1 rounded border border-red-300 text-red-600 cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
+          className="px-2 py-1 rounded border border-red-300 text-red-600 cursor-pointer z-20"
         >
           Delete
         </button>
@@ -150,13 +156,13 @@ export default function BoardStash()  {
 
       <div className="flex justify-end gap-2">
         <button
-          className="px-3 py-2 rounded border"
+          className="px-3 py-2 rounded border cursor-pointer"
           onClick={() => setConfirmDelete(null)}
         >
           Cancel
         </button>
         <button
-          className="px-3 py-2 rounded border border-red-300 text-red-600"
+          className="px-3 py-2 rounded border border-red-300 text-red-600 cursor-pointer"
           onClick={() => {
             dispatch({ type: "REMOVE_BOARD", id: confirmDelete.id });
             setConfirmDelete(null);
