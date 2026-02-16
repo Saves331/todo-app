@@ -5,7 +5,9 @@ function Navbar() {
   return (
     <section className="py-2 px-5 flex justify-between border-b-orange border-b-2">
         <div className="flex items-center">
-            <FaHome className="text-2xl text-brown" ></FaHome>
+
+          <a href="/"><FaHome className="text-2xl text-brown" ></FaHome></a>
+            
         </div>
         
         <div className="flex items-center gap-6">
