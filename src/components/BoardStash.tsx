@@ -1,8 +1,8 @@
-import { useState, useReducer } from "react"
+import { useState, useReducer, useEffect } from "react"
 import AddProjectBtn from "./AddProjectBtn"
 import { useNavigate } from "react-router-dom";
 
-
+const STORAGE_KEY = "todo-app-boards";
 const MAX_BOARDS = 8;
 
 type Board = {id: string, name: string}
@@ -47,6 +47,25 @@ type Action = | {type: "ADD_BOARD"} | {type: "REMOVE_BOARD"; id: string} | {type
   }
 }
 
+function LoadBoards(): Board[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return [];
+    const data = JSON.parse(raw);
+    return  Array.isArray(data) ? data : []
+  } catch {
+    return [];
+  }
+    }
+
+
+function SaveBoards(boards: Board[]) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(boards));
+  } catch {}
+  
+}
+
 function BoardCard({
   board,
   onRemove,
@@ -68,7 +87,7 @@ function BoardCard({
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-md mb-4 cardBox active:bg-gray-200 flex items-center justify-between gap-3 z-10" onClick={() => navigate(`/board/${board.id}`)}>
+    <div className="bg-white rounded-md mb-4 cardBox active:bg-gray-200 hover:bg-gray-100 flex items-center justify-between gap-3 z-10" onClick={() => navigate(`/board/${board.id}`)}>
 
       <div className="flex-1">
         {!isEditing ? (
@@ -124,7 +143,13 @@ function BoardCard({
 
 export default function BoardStash()  {
   const [confirmDelete, setConfirmDelete] = useState<Board | null>(null)
-  const [state, dispatch] = useReducer(reducer, {boards: []});
+ const [state, dispatch] = useReducer(reducer, undefined, () => ({
+    boards: LoadBoards(),
+  }));
+
+  useEffect(() => {
+    SaveBoards(state.boards);
+  }, [state.boards])
 
   const remaining = MAX_BOARDS - state.boards.length;
 
